@@ -12,6 +12,14 @@ from pathlib import Path
 
 ENTRY = "Your future is bright, confident, and hallucinated."
 
+# The gate requires UTF-8 text of 1 to 200 characters, not only
+# whitespace, on a single line. Fail loudly rather than write an
+# entry the gate would refuse.
+assert ENTRY and not ENTRY.isspace(), "fortune must not be blank"
+assert "\n" not in ENTRY and "\r" not in ENTRY, "fortune must be one line"
+assert 1 <= len(ENTRY) <= 200, "fortune must be 1-200 characters"
+ENTRY.encode("utf-8")
+
 
 def main() -> None:
     output_dir = Path(os.environ.get("MAKEFUN_OUTPUT_DIR", "/output"))
